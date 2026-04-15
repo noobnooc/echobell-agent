@@ -2,16 +2,19 @@
 
 `echobell-agent` is a dedicated repository for agent-facing Echobell integrations.
 
-Version 1 ships one thing only: a reusable Codex skill for sending Echobell
-notifications when long-running agent work finishes or fails, plus the docs and
-scripts required to install and operate it cleanly.
+Version 1 ships one thing only: a reusable Echobell notification skill for
+long-running agent work, packaged in a way that can be installed through common
+agent instruction surfaces first, with native Codex support as a secondary path.
 
 ## What This Repository Includes
 
-- A native Codex skill: `skills/echobell-notify`
-- A safe installer for local Codex skill directories
+- A portable `AGENTS.md` template for agents that support repository-level
+  instructions
+- A reusable `SKILL.md` skill folder for skill-aware runtimes
+- Agent-specific adapters for Claude Code, Cursor, Windsurf, Copilot, and Codex
+- Generic and Codex-specific installers
 - Prompt and payload examples
-- Detailed setup, usage, adapter, and troubleshooting docs
+- Detailed setup, compatibility, usage, adapter, and troubleshooting docs
 - A validation script and CI workflow
 
 ## Current Scope
@@ -28,14 +31,26 @@ scripts required to install and operate it cleanly.
    export ECHOBELL_WEBHOOK_URL="https://hook.echobell.one/your-channel-or-direct-url"
    ```
 
-3. Install the skill:
+3. Install the generic repository-level adapter:
+
+   ```bash
+   ./scripts/install-agent-adapter.sh agents-md /path/to/your/workspace
+   ```
+
+4. If your agent supports native skill directories, optionally install the skill
+   folder too:
+
+   ```bash
+   ./scripts/install-skill.sh
+   ```
+
+5. If you use Codex specifically, you can also install the native Codex skill:
 
    ```bash
    ./scripts/install-codex-skill.sh
    ```
 
-4. Restart Codex so it reloads local skills.
-5. Use prompts such as:
+6. Use prompts such as:
 
    ```text
    Use $echobell-notify and send me a time-sensitive Echobell notification when this refactor finishes.
@@ -46,17 +61,29 @@ scripts required to install and operate it cleanly.
 ```text
 .
 ├── docs/
+│   ├── compatibility.md
 │   ├── installation.md
 │   ├── other-agents.md
 │   ├── troubleshooting.md
 │   └── usage.md
+├── adapters/
+│   ├── claude-code/
+│   ├── copilot/
+│   ├── cursor/
+│   └── windsurf/
 ├── examples/
 │   ├── env.example
 │   └── prompt-kit.md
 ├── scripts/
+│   ├── install-agent-adapter.sh
+│   ├── install-skill.sh
 │   ├── install-codex-skill.sh
+│   ├── uninstall-skill.sh
 │   ├── uninstall-codex-skill.sh
 │   └── validate-skill.sh
+├── templates/
+│   ├── AGENTS.md
+│   └── CLAUDE.md
 └── skills/
     └── echobell-notify/
         ├── SKILL.md
@@ -68,6 +95,7 @@ scripts required to install and operate it cleanly.
 
 ## Documentation
 
+- [Compatibility](./docs/compatibility.md)
 - [Installation](./docs/installation.md)
 - [Usage](./docs/usage.md)
 - [Using the repo with other agents](./docs/other-agents.md)
@@ -95,12 +123,11 @@ Run the local validation flow:
 ./scripts/validate-skill.sh
 ```
 
-The script installs the skill into a temporary Codex home and checks that the
-expected files exist.
+The script validates the generic skill installer, the AGENTS/CLAUDE adapters,
+the Codex wrapper, and the expected repository assets.
 
 ## Roadmap
 
 - Add an MCP server as a separate module
 - Add hosted webhook helper tooling if the ergonomics justify it
 - Add IDE-specific adapters once the skill workflow stabilizes
-

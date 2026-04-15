@@ -1,0 +1,17 @@
+---
+description: Echobell notifications for long-running agent tasks
+alwaysApply: true
+---
+
+# Echobell Notify
+
+- Use Echobell when the user asks for a notification on completion or failure
+- Require `ECHOBELL_WEBHOOK_URL`
+- Default `active` for routine completions
+- Use `time-sensitive` when the user is actively waiting
+- Use `calling` only for urgent failures or wake-me-up events
+- Keep payloads short and operational
+- Use one final notification unless the user explicitly asks for progress updates
+- Use `curl` to POST JSON to `$ECHOBELL_WEBHOOK_URL`
+- Never include secrets, tokens, credentials, or private diffs
+

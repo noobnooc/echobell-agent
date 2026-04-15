@@ -1,42 +1,71 @@
 # Other Agents
 
-This repository currently provides one native integration target:
+This repository is no longer Codex-only.
 
-- Codex skills
+The default install path is generic first:
 
-Other agents can still reuse the same guidance, but this repository does not
-pretend they all share one install format.
+1. `AGENTS.md`
+2. `SKILL.md` skill directory
+3. native adapters
 
 ## Claude Code
 
-Claude Code does not use the same native skill directory layout as Codex.
+Use the included Claude adapter:
 
-Recommended approach:
+```bash
+./scripts/install-agent-adapter.sh claude-code /path/to/workspace
+```
 
-1. Copy the operational guidance from:
-   - `skills/echobell-notify/SKILL.md`
-   - `examples/prompt-kit.md`
-2. Place the relevant instructions in your project memory, custom prompt
-   templates, or team runbook.
-3. Export `ECHOBELL_WEBHOOK_URL` in the shell environment that launches Claude
-   Code.
+This creates a `CLAUDE.md` that imports `AGENTS.md`, which matches Claude
+Code's documented pattern for sharing instruction content across tools.
 
-## Cursor and Windsurf
+## Cursor
 
-For Cursor and Windsurf, treat this repository as a prompt and runbook package:
+You can use either the generic `AGENTS.md` path or a native Cursor rule:
 
-1. Copy the prompt snippets from `examples/prompt-kit.md`
-2. Add them to your workspace rules or reusable prompts
-3. Make sure the agent runtime can reach the same `ECHOBELL_WEBHOOK_URL`
+```bash
+./scripts/install-agent-adapter.sh cursor /path/to/workspace
+```
 
-## Why the repo starts with Codex
+This creates:
 
-Codex gives this repository a stable, explicit skill format, which means:
+```text
+/path/to/workspace/.cursor/rules/echobell-notify.mdc
+```
 
-- the install path is deterministic
-- the invocation format is explicit
-- the repository can validate installation and structure automatically
+## Windsurf
 
-That is a better first milestone than claiming universal agent support with weak
-or hand-wavy install instructions.
+You can use either the generic `AGENTS.md` path or a native Windsurf rule:
 
+```bash
+./scripts/install-agent-adapter.sh windsurf /path/to/workspace
+```
+
+## GitHub Copilot
+
+For Copilot you have three workable paths:
+
+1. root `AGENTS.md`
+2. `.github/copilot-instructions.md`
+3. a skill directory under `.github/skills`, `~/.copilot/skills`, or
+   `~/.agents/skills`
+
+This repository gives you both the Copilot instruction adapter and a generic
+skill folder.
+
+## Codex
+
+Codex works with the generic `AGENTS.md` path, but it also has a native local
+skills directory:
+
+```bash
+./scripts/install-codex-skill.sh
+```
+
+## Bottom line
+
+Most agent setups should start with `AGENTS.md`.
+
+Use the skill directory when the runtime supports `SKILL.md`.
+
+Use vendor-specific files only when they provide a better native loading path.

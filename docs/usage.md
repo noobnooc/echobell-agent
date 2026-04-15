@@ -1,5 +1,12 @@
 # Usage
 
+This repository supports two usage shapes:
+
+1. repository instructions via `AGENTS.md` or another agent-native rule file
+2. native skill-directory loading via `skills/echobell-notify`
+
+The behavior is intentionally the same across both shapes.
+
 ## What the Skill Does
 
 `echobell-notify` helps an agent:
@@ -31,6 +38,9 @@ Default to `time-sensitive` only when the user explicitly cares about quick
 awareness. Default to `active` for routine completions. Use `calling` sparingly.
 
 ## Prompt Patterns
+
+These examples work whether the agent loaded the logic through `AGENTS.md`,
+`CLAUDE.md`, a Cursor/Windsurf rule, or a native skill directory.
 
 ### Completion notification
 
@@ -105,4 +115,3 @@ Bad:
 
 - success: `time-sensitive`
 - blocker or failed remediation: `calling`
-

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Echobell Notify"
+  short_description: "Send Echobell notifications for long-running agent tasks"
+  default_prompt: "Use $echobell-notify to send an Echobell notification when this task completes."
+
+policy:
+  allow_implicit_invocation: true
+
